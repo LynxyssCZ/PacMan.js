@@ -10,21 +10,25 @@ spritesheet.src = "http://oi59.tinypic.com/eq5iso.jpg";
 	spritesheet.onload = function() {
 		var PacMan = new Game.Engine(16, 80, 40);
 		PacMan.init(spritesheet);
-		PacMan.map.placePlayer(0, 0, 0);
 		PacMan.map.defineObject("block", { color: "#aaaaaa"});
+		PacMan.map.defineObject("blinky", { dynamic: true, tile: 1, turn: function(){} });
+		PacMan.map.defineObject("pinky", { dynamic: true, tile: 2, turn: function(){} });
+		PacMan.map.defineObject("inky", { dynamic: true, tile: 3, turn: function(){} });
+		PacMan.map.defineObject("clyde", { dynamic: true, tile: 4, turn: function(){} });
+
+		PacMan.map.addDynamic(3, 2, "pinky");
+		PacMan.map.addDynamic(4, 2, "blinky");
+		PacMan.map.addDynamic(5, 2, "inky");
+		PacMan.map.addDynamic(6, 2, "clyde");
 		PacMan.map.placeObject(1,1, "block");
 		PacMan.map.placeObject(1,2, "block");
 		PacMan.map.placeObject(1,3, "block");
 		PacMan.map.placeObject(1,4, "block");
-		PacMan.map.placeObject(15,6, "block");
+
+		PacMan.map.placePlayer(2, 2, 0);
+
 		PacMan.start();
 		PacMan.map.draw();
-
-		PacMan.display.drawTile(2, 1, 0, 0, true);
-		PacMan.display.drawTile(2, 1, 4, 0, true);
-		PacMan.display.drawTile(3, 1, 1, 0, true);
-		PacMan.display.drawTile(4, 1, 2, 0, true);
-		PacMan.display.drawTile(5, 1, 3, 0, true);
 	}
 //]]>  
 </script>

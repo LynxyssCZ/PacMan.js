@@ -1,8 +1,13 @@
+/***********************************************************************/
 // Global namespace wrapper
+// Content of game.js
 var Game = {
 
 };
+
+/***********************************************************************/
 // Engine object
+// Content of engine.js
 Game.Engine = function (size, width, height) {
 	this.tileSize = size;
 	this.width = width;
@@ -58,7 +63,9 @@ Game.Engine.prototype._next = function() {
 	return current;
 };
 
+/***********************************************************************/
 // Map object
+// Content of map.js
 Game.Map = function (game, display) {
 	this._game = game;
 	this._display = display;
@@ -78,12 +85,20 @@ Game.Map.prototype.defineObject = function (name, props) {
 	this._objectDefs[name] = props;
 };
 
+Game.Map.prototype.addDynamic = function(nx, ny, type) {
+	var x = Math.floor(nx);
+	var y = Math.floor(ny);
+	if (!this._objectDefs[type])
+		throw "There is no type of object named " + type + "!";
+	this._dynamics.push( new Game.DynamicObject(type, x, y, this._game, this) );
+}
+
 Game.Map.prototype.placeObject = function (nx, ny, type) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
 	if (!this._objectDefs[type])
 		throw "There is no type of object named " + type + "!";
-
+	if ( x == this.getPlayerX() && y == this.getPlayerY() ) throw "Cell occupied by a player!";
 	if (typeof(this._objects[x]) === 'undefined') { // Row not instanced yet
 		this._objects[x] = [];
 		this._objects[x][y] = type;
@@ -95,10 +110,25 @@ Game.Map.prototype.placeObject = function (nx, ny, type) {
 };
 
 Game.Map.prototype.placePlayer = function (x, y, tile) {
-	if (this._playerCoords === null) this._playerCoords = [x, y];
-	else throw "Player already in place!";
-	
+	if (this._player){
+		throw "Player already in place!";
+	} else {
+		this._player = new Game.Player(x, y, tile, this, this._game);
+	}
+
 };
+
+Game.Map.prototype.getPlayerX = function() {
+	if (this._player) { return this._player._x; };
+}
+
+Game.Map.prototype.getPlayerY = function() {
+	if (this._player) { return this._player._y; };
+}
+
+Game.Map.prototype.getDefinition = function(type) {
+	return this._objectDefs[type];
+}
 
 Game.Map.prototype.draw = function() {
 	for (var row in this._objects) {
@@ -111,9 +141,18 @@ Game.Map.prototype.draw = function() {
 			}
 		};
 	};
+	for (key in this._dynamics) {
+		if (this._dynamics[key].tile) {
+			var curr = this._dynamics[key];
+			this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), 0, true );
+		};
+	};
+	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), 0, true );};
 }
 
+/***********************************************************************/
 // Display object
+// Content of display.js
 Game.Display = function (width, height, tileWidth, tileHeight, sheet) {
 	this.width = width;
 	this.height = height;
@@ -150,7 +189,68 @@ Game.Display.prototype.clearTile = function (x, y) {
 	this.drawBlock(x, y, 1, 1, "#000000");
 };
 
-// Player Object
-Game.Player = function (tile) {
+/***********************************************************************/
+// Dynamic object
+// Content of dynamic.js
+Game.DynamicObject = function (type, x, y, game, map) {
+	this._game = game;
+	this._map = map;
+	this._type = type;
+	this._x = x;
+	this._y = y;
+	this._def = map.getDefinition(type);
+	this.tile = this._def.tile;
+}
+
+Game.DynamicObject.prototype.getTile = function() {
+	return this.tile;
+}
+
+Game.DynamicObject.prototype.act = function() {
+	if (this._def.turn)
+		this._def.turn();
+};
+
+Game.DynamicObject.prototype.getX = function() {
+	return this._x;
+};
+
+Game.DynamicObject.prototype.getY = function() {
+	return this._y;
+};
+
+Game.DynamicObject.prototype.move = function(direction) {
+	
+};
+
+/***********************************************************************/
+// Player object
+// Content of player.js
+Game.Player = function (x, y, tile, map, game) {
+	this._x = x;
+	this._y = y;
+	this._game = game;
+	this._map = map;
 	this.tile = tile;
 };
+
+Game.Player.prototype.act = function() {
+
+};
+
+Game.Player.prototype.getY = function() {
+	return this._y
+};
+
+Game.Player.prototype.getX = function() {
+	return this._x
+};
+
+Game.Player.prototype.getTile = function() {
+	return this.tile;
+}
+
+Game.Player.prototype.move = function(direction) {
+
+};
+
