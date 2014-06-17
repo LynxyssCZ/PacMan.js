@@ -1,5 +1,6 @@
 Game.Map.Wall = {
 	impassable:true ,
-	tile: 5,
-	frame: 0,
+//	tile: 5,
+//	frame: 0,
+	color: "#aaaaaa"
 };
