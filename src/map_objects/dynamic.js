@@ -35,9 +35,9 @@ Game.DynamicObject.prototype.getY = function() {
 
 Game.DynamicObject.prototype.canMove = function( direction ) {
 	switch(direction) {
-		case 0: return this._map.canMoveTo( this._x-1, this._y ) && !this._map.checkForDynamic( this._x-1, this._y );
+		case 2: return this._map.canMoveTo( this._x-1, this._y ) && !this._map.checkForDynamic( this._x-1, this._y );
 			break;
-		case 2: return this._map.canMoveTo( this._x+1, this._y ) && !this._map.checkForDynamic( this._x+1, this._y );
+		case 0: return this._map.canMoveTo( this._x+1, this._y ) && !this._map.checkForDynamic( this._x+1, this._y );
 			break;
 		case 4: return this._map.canMoveTo( this._x, this._y-1 ) && !this._map.checkForDynamic( this._x, this._y-1 );
 			break;
@@ -49,9 +49,9 @@ Game.DynamicObject.prototype.canMove = function( direction ) {
 Game.DynamicObject.prototype.move = function(direction) {
 	var newX = this._x; var newY = this._y;
 	switch(direction) {
-		case 0: newX--;
+		case 2: newX--;
 			break;
-		case 2: newX++;
+		case 0: newX++;
 			break;
 		case 4: newY--;
 			break;
@@ -60,11 +60,12 @@ Game.DynamicObject.prototype.move = function(direction) {
 	}
 
 	// Check if player is on new indices
-	if ( this._map.GetPlayerX == newX && this._map.GetPlayerX == newX ) {
-		this.onCollision(this._map.getPlayer);
+	if ( this._map.getPlayerX() == newX && this._map.getPlayerY() == newY ) {
+		this.onCollision(this._map.getPlayer());
+	} else {
+		this._x = newX;
+		this._y = newY;
 	}
-	this._x = newX;
-	this._y = newY;
 };
 
 Game.DynamicObject.prototype.onCollision = function(player) {

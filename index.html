@@ -6,7 +6,7 @@
 	<script type='text/javascript' src='pacman.js'></script>
 	<script type="text/javascript">//<![CDATA[ 
 var spritesheet = new Image();
-spritesheet.src = "http://oi59.tinypic.com/eq5iso.jpg";
+spritesheet.src = "http://oi60.tinypic.com/20fxafs.jpg";
 	spritesheet.onload = function() {
 		var PacMan = new Game.Engine(16, 80, 40);
 		PacMan.init(spritesheet);
@@ -34,6 +34,9 @@ spritesheet.src = "http://oi59.tinypic.com/eq5iso.jpg";
 			PacMan.map.placeObject(42,y, "block");
 		};
 
+		for (x = 38; x<= 42; x++) {
+			PacMan.map.placeObject(x,7, "block");	
+		}
 
 		PacMan.map.placeObject(1,1, "block");
 		PacMan.map.placeObject(1,2, "block");

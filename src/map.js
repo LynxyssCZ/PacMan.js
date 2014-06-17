@@ -74,11 +74,11 @@ Game.Map.prototype.getPlayer = function() {
 }
 
 Game.Map.prototype.getPlayerX = function() {
-	if (this._player) { return this._player._x; };
+	if (this._player) { return this._player.getX(); };
 }
 
 Game.Map.prototype.getPlayerY = function() {
-	if (this._player) { return this._player._y; };
+	if (this._player) { return this._player.getY(); };
 }
 
 Game.Map.prototype.getDefinition = function(type) {
@@ -91,7 +91,12 @@ Game.Map.prototype.draw = function() {
 	for (var row in this._objects) {
 		for (var coll in this._objects[row]) {
 			var objectDef = this._objectDefs[this._objects[row][coll]];
-			if ( objectDef.tile ) { 
+			if ( objectDef.tile ) {
+				if ( objectDef.frame ) {
+					this._display.drawTile( row, coll, objectDef.tile, objectDef.frame, false );
+				} else {
+					this._display.drawTile( row, coll, objectDef.tile, 0, false );
+				}
 			}
 			else if( objectDef.color ) { 
 				this._display.drawBlock( row , coll , 1, 1, objectDef.color);
@@ -155,6 +160,7 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 			};
 		}
 	}
+	this.draw();
 	return true;
 }
 
