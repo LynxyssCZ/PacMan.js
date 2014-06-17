@@ -1,13 +1,15 @@
 /***********************************************************************/
 // Map object
 // Content of map.js
-Game.Map = function (game, display) {
+Game.Map = function (game, display, width, height) {
 	this._game = game;
 	this._display = display;
 	this._objectDefs = [];
 	this._objects = [[]];
 	this._dynamics = [];
 	this._player = null;
+	this._width = width;
+	this._height = height;
 };
 
 /**
@@ -98,6 +100,7 @@ Game.Map.prototype.draw = function() {
 Game.Map.prototype.canMoveTo = function(nx, ny, type) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
+	if (x >= this._width || y >= this._height || x < 0 || y < 0 ) {return false};
 	// Check dynamics first
 	for(key in this._dynamics) { if (this._dynamics[key].getX == x &&  this._dynamics[key].getY == y) {return false; }; };
 	if (typeof(this._objects[x]) === 'undefined') { // Row not instanced yet
@@ -105,7 +108,7 @@ Game.Map.prototype.canMoveTo = function(nx, ny, type) {
 	} else if (typeof(this._objects[x][y]) === 'undefined') { // Cell empty
 		return true;
 	} else { // Cell Is occupied
-		if( this._objectDefs[ this._objects[x][y] ].unpassable  ) return false;
+		if( this._objectDefs[ this._objects[x][y] ].impassable  ) return false;
 		else return true;
 	}
 }

@@ -44,13 +44,22 @@ Game.Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
 
 	if (!(code in this._keyMap)) { return; }
-	window.removeEventListener("keydown", this);
+	var newX = this._x;
+	var newY = this._y;
 	switch(code) {
-		case 37: this._x--; break;
-		case 38: this._y--; break;
-		case 39: this._x++; break;
-		case 40: this._y++; break;
+		case 37: newX--; break;
+		case 38: newY--; break;
+		case 39: newX++; break;
+		case 40: newY++; break;
 	}
+
+	if (!this._map.canMoveTo(newX, newY, 'player')) { return; };
+	this._map.playerMoveTo(newX, newY);
+	
+	this._x = newX;
+	this._y = newY;
 	this._dir = this._keyMap[code] ;
+	
+	window.removeEventListener("keydown", this);
 	this._game.unlock();
 }

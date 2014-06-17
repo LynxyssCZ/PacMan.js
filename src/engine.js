@@ -11,7 +11,7 @@ Game.Engine = function (size, width, height) {
 
 Game.Engine.prototype.init = function (spriteSheet) {
 	this.display = new Game.Display(this.width, this.height, this.tileSize, this.tileSize, spriteSheet);
-	this.map = new Game.Map(this, this.display);
+	this.map = new Game.Map(this, this.display, this.width, this.height);
 	this.add(this.map);
 	document.body.appendChild(this.display.getContainer());
 	
