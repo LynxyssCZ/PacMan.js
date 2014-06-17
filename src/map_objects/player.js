@@ -54,12 +54,12 @@ Game.Player.prototype.handleEvent = function(e) {
 	}
 
 	if (!this._map.canMoveTo(newX, newY, 'player')) { return; };
-	this._map.playerMoveTo(newX, newY);
+	if (this._map.playerMoveTo(newX, newY)){
+		this._x = newX;
+		this._y = newY;
+		this._dir = this._keyMap[code] ;
 	
-	this._x = newX;
-	this._y = newY;
-	this._dir = this._keyMap[code] ;
-	
-	window.removeEventListener("keydown", this);
-	this._game.unlock();
+		window.removeEventListener("keydown", this);
+		this._game.unlock();
+	}
 }

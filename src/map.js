@@ -101,8 +101,7 @@ Game.Map.prototype.canMoveTo = function(nx, ny, type) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
 	if (x >= this._width || y >= this._height || x < 0 || y < 0 ) {return false};
-	// Check dynamics first
-	for(key in this._dynamics) { if (this._dynamics[key].getX == x &&  this._dynamics[key].getY == y) {return false; }; };
+
 	if (typeof(this._objects[x]) === 'undefined') { // Row not instanced yet
 		return true;
 	} else if (typeof(this._objects[x][y]) === 'undefined') { // Cell empty
@@ -119,7 +118,22 @@ Game.Map.prototype.getObjectOn = function(nx, ny) {
 }
 
 Game.Map.prototype.playerMoveTo = function(nx, ny) {
+	var x = Math.floor(nx);
+	var y = Math.floor(ny);
+	// Check dynamics collisions first
+	for (key in this._dynamics) {
+		var curr = this._dynamics[key];
+		if (curr.getX() == x && curr.getY() == y) {
 
+			return curr.onCollision(this._player);
+		};
+	};
+	if (typeof(this._objects[x]) !== 'undefined') { // Row is instanced
+		if (typeof(this._objects[x][y]) !== 'undefined') { // Cell is not empty
+			// HAndle collision with this object
+		}
+	}
+	return true;
 }
 
 Game.Map.prototype.checkDynamicCollision = function() {

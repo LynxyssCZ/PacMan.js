@@ -10,11 +10,11 @@ spritesheet.src = "http://oi59.tinypic.com/eq5iso.jpg";
 	spritesheet.onload = function() {
 		var PacMan = new Game.Engine(16, 80, 40);
 		PacMan.init(spritesheet);
-		PacMan.map.defineObject("block", { impassable:true ,color: "#aaaaaa"});
-		PacMan.map.defineObject("blinky", { dynamic: true, tile: 1, turn: function(){} });
-		PacMan.map.defineObject("pinky", { dynamic: true, tile: 2, turn: function(){} });
-		PacMan.map.defineObject("inky", { dynamic: true, tile: 3, turn: function(){} });
-		PacMan.map.defineObject("clyde", { dynamic: true, tile: 4, turn: function(){} });
+		PacMan.map.defineObject("block", Game.Map.Wall);
+		PacMan.map.defineObject("blinky", new Game.Map.Ghost(1));
+		PacMan.map.defineObject("pinky", new Game.Map.Ghost(2));
+		PacMan.map.defineObject("inky", new Game.Map.Ghost(3));
+		PacMan.map.defineObject("clyde", new Game.Map.Ghost(4));
 
 		PacMan.map.addDynamic(3, 2, "pinky");
 		PacMan.map.addDynamic(4, 2, "blinky");
