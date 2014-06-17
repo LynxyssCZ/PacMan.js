@@ -8,6 +8,7 @@ Game.Player = function (x, y, tile, map, game) {
 	this._map = map;
 	this.tile = tile;
 	this._dir = 0;
+	this._animation = 0;
 	this._keyMap = {};
 	this._keyMap[37] = 2; // LEFT
 	this._keyMap[38] = 4; // UP
@@ -33,11 +34,21 @@ Game.Player.prototype.getTile = function() {
 }
 
 Game.Player.prototype.getFrame = function() {
-	return this._dir;
+	var frame = this._animation;
+	if (this._animation == 0) { this._animation++;}
+	else {this._animation = 0; }
+	return this._dir+frame;
 }
 
-Game.Player.prototype.move = function(direction) {
+Game.Player.prototype.move = function(newX, newY) {
 
+	if (!this._map.canMoveTo(newX, newY, 'player')) { return false; };
+	if (this._map.playerMoveTo(newX, newY)){
+		this._x = newX;
+		this._y = newY;
+		return true;
+	}
+	return false;
 };
 
 Game.Player.prototype.handleEvent = function(e) {
@@ -53,13 +64,10 @@ Game.Player.prototype.handleEvent = function(e) {
 		case 40: newY++; break;
 	}
 
-	if (!this._map.canMoveTo(newX, newY, 'player')) { return; };
-	if (this._map.playerMoveTo(newX, newY)){
-		this._x = newX;
-		this._y = newY;
+	if (this.move(newX, newY)) {
 		this._dir = this._keyMap[code] ;
-	
 		window.removeEventListener("keydown", this);
 		this._game.unlock();
-	}
+	};
+
 }

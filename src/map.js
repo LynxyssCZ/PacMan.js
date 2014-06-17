@@ -115,6 +115,18 @@ Game.Map.prototype.canMoveTo = function(nx, ny, type) {
 Game.Map.prototype.getObjectOn = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
+	if (typeof(this._objects[x]) !== 'undefined') { // Row is instanced
+		if (typeof(this._objects[x][y]) !== 'undefined') { // Cell is not empty
+			return this._objectDefs[this._objects[x][y]]; // Return object def
+		}
+	}
+
+	for (key in this._dynamics) {
+		var curr = this._dynamics[key];
+		if (curr.getX() == x && curr.getY() == y) {
+			return curr;
+		};
+	};
 }
 
 Game.Map.prototype.playerMoveTo = function(nx, ny) {
