@@ -10,43 +10,7 @@ spritesheet.src = "http://oi60.tinypic.com/20fxafs.jpg";
 	spritesheet.onload = function() {
 		var PacMan = new Game.Engine(16, 80, 40);
 		PacMan.init(spritesheet);
-		PacMan.map.defineObject("block", Game.Map.Wall);
-		PacMan.map.defineObject("blinky", new Game.Map.Ghost(1));
-		PacMan.map.defineObject("pinky", new Game.Map.Ghost(2));
-		PacMan.map.defineObject("inky", new Game.Map.Ghost(3));
-		PacMan.map.defineObject("clyde", new Game.Map.Ghost(4));
-		PacMan.map.defineObject("food", Game.Map.Food );
-
-		PacMan.map.addDynamic(39, 9, "pinky");
-		PacMan.map.addDynamic(40, 9, "blinky");
-		PacMan.map.addDynamic(39, 10, "inky");
-		PacMan.map.addDynamic(40, 10, "clyde");
-
-		for (y = 8; y <= 12; y++) {
-			PacMan.map.placeObject(37,y, "block");
-		};
-		
-		for (x = 38; x<= 42; x++) {
-			PacMan.map.placeObject(x,12, "block");	
-		}
-
-		for (y = 8; y <= 11; y++) {
-			PacMan.map.placeObject(42,y, "block");
-		};
-
-		for (x = 38; x<= 42; x++) {
-			PacMan.map.placeObject(x,7, "block");	
-		}
-
-		PacMan.map.placeObject(1,1, "block");
-		PacMan.map.placeObject(1,2, "block");
-		PacMan.map.placeObject(1,3, "block");
-		PacMan.map.placeObject(1,4, "food");
-		PacMan.map.placeObject(5,4, "food");
-		PacMan.map.placeObject(12,8, "food");
-		PacMan.map.placeObject(10,24, "food");
-
-		PacMan.map.placePlayer(2, 2, 0);
+		PacMan.loadLevel(Game.Level01);
 		PacMan.map.draw();
 		PacMan.start();
 	}

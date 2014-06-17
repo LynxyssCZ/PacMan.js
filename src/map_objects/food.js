@@ -3,5 +3,6 @@ Game.Map.Food = {
 	frame: 1,
 	onCollision: function(me, player) {
 		player.nom(me);
+		return true;
 	}
 };

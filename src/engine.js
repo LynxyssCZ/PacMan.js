@@ -13,8 +13,7 @@ Game.Engine.prototype.init = function (spriteSheet) {
 	this.display = new Game.Display(this.width, this.height, this.tileSize, this.tileSize, spriteSheet);
 	this.map = new Game.Map(this, this.display, this.width, this.height);
 	this.add(this.map);
-	document.body.appendChild(this.display.getContainer());
-	
+	document.body.appendChild(this.display.getContainer());	
 };
 
 Game.Engine.prototype.loadLevel = function (level) {

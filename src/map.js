@@ -4,13 +4,18 @@
 Game.Map = function (game, display, width, height) {
 	this._game = game;
 	this._display = display;
+	this._width = width;
+	this._height = height;
+	this.clear();
+};
+
+Game.Map.prototype.clear = function() {
 	this._objectDefs = [];
 	this._objects = [[]];
 	this._dynamics = [];
 	this._player = null;
-	this._width = width;
-	this._height = height;
-};
+	this._foodCount = 0;
+}
 
 /**
  * Add object definition
@@ -21,6 +26,18 @@ Game.Map.prototype.defineObject = function (name, props) {
 	}
 	this._objectDefs[name] = props;
 };
+
+Game.Map.prototype.setFoodCount = function(count) {
+	this._foodCount = count;
+}
+
+Game.Map.prototype.getFoodCount = function() {
+	return this._foodCount;
+}
+
+Game.Map.prototype.eatFood = function(count) {
+	this._foodCount--;
+}
 
 Game.Map.prototype.addDynamic = function(nx, ny, type) {
 	var x = Math.floor(nx);
@@ -40,8 +57,10 @@ Game.Map.prototype.placeObject = function (nx, ny, type) {
 	if (typeof(this._objects[x]) === 'undefined') { // Row not instanced yet
 		this._objects[x] = [];
 		this._objects[x][y] = type;
+		if (type == 'food') {this._foodCount++;};
 	} else if (typeof(this._objects[x][y]) === 'undefined') { // Cell empty
 		this._objects[x][y] = type;
+		if (type == 'food') {this._foodCount++;};
 	} else { // Cell Is full
 		throw "Cell " + x +":"+ y + " is already full!";
 	}
@@ -149,7 +168,6 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 	for (key in this._dynamics) {
 		var curr = this._dynamics[key];
 		if (curr.getX() == x && curr.getY() == y) {
-
 			return curr.onCollision(this._player);
 		};
 	};
@@ -160,7 +178,6 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 			};
 		}
 	}
-	this.draw();
 	return true;
 }
 
@@ -176,8 +193,22 @@ Game.Map.prototype.checkForDynamic = function(nx, ny) {
 }
 
 Game.Map.prototype.act = function() {
+	if (this.getFoodCount() == 0) {
+		this.draw();
+		this._game.lock();
+		alert("All has been nomed!");
+		return;
+	};
+	if (this._player.killed) {
+		this.draw();
+		this._game.lock();
+		return;
+	};
 	for(key in this._dynamics) {
 		this._dynamics[key].act();
 	}
+	if (this._player.killed) {
+		this._game.lock();
+	};
 	this.draw();
 };

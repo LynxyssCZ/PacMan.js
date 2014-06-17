@@ -4,6 +4,7 @@
 Game.Player = function (x, y, tile, map, game) {
 	this._x = x;
 	this._y = y;
+	this.killed = false;
 	this._game = game;
 	this._map = map;
 	this.tile = tile;
@@ -22,14 +23,15 @@ Game.Player.prototype.act = function() {
 };
 
 Game.Player.prototype.killedBy = function(killer) {
-	this._game.lock();
+	//this._game.lock();
+	this.killed = true;
 	alert("Killed by "+killer);
-}
+};
 
 Game.Player.prototype.nom = function ( food ) {
-	alert("Nom nom at "+food.x+":"+food.y);
 	this._map.destroyObject(food.x, food.y);
-}
+	this._map.eatFood();
+};
 
 Game.Player.prototype.getY = function() {
 	return this._y
@@ -41,23 +43,24 @@ Game.Player.prototype.getX = function() {
 
 Game.Player.prototype.getTile = function() {
 	return this.tile;
-}
+};
 
 Game.Player.prototype.getFrame = function() {
 	var frame = this._animation;
 	if (this._animation == 0) { this._animation++;}
 	else {this._animation = 0; }
 	return this._dir+frame;
-}
+};
 
 Game.Player.prototype.move = function(newX, newY) {
 
 	if (!this._map.canMoveTo(newX, newY, 'player')) { return false; };
-	if (this._map.playerMoveTo(newX, newY)){
+	if (this._map.playerMoveTo(newX, newY)) {
 		this._x = newX;
 		this._y = newY;
 		return true;
 	}
+
 	return false;
 };
 
@@ -79,5 +82,4 @@ Game.Player.prototype.handleEvent = function(e) {
 		window.removeEventListener("keydown", this);
 		this._game.unlock();
 	};
-
-}
+};
