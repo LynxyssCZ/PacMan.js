@@ -72,7 +72,7 @@ Game.Map.prototype.destroyObject = function(nx, ny) {
 
 	if (typeof(this._objects[x]) !== 'undefined') { // Row is instanced
 		if (typeof(this._objects[x][y]) !== 'undefined') { // Cell is not empty
-			this._objects[x].splice(y, 1);
+			delete this._objects[x][y];
 		}
 	}
 }
