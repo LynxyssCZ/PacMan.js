@@ -89,10 +89,10 @@ Game.Map.prototype.draw = function() {
 	for (key in this._dynamics) {
 		if (this._dynamics[key].tile) {
 			var curr = this._dynamics[key];
-			this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), 0, false );
+			this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(), false );
 		};
 	};
-	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), 0, true );};
+	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), this._player.getFrame(), true );};
 }
 
 Game.Map.prototype.canMoveTo = function(nx, ny, type) {

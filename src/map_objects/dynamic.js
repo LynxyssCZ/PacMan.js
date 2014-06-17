@@ -15,6 +15,10 @@ Game.DynamicObject.prototype.getTile = function() {
 	return this.tile;
 }
 
+Game.DynamicObject.prototype.getFrame = function() {
+	return 0;
+}
+
 Game.DynamicObject.prototype.act = function() {
 	if (this._def.turn)
 		this._def.turn();

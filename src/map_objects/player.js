@@ -7,11 +7,12 @@ Game.Player = function (x, y, tile, map, game) {
 	this._game = game;
 	this._map = map;
 	this.tile = tile;
+	this._dir = 0;
 	this._keyMap = {};
-	this._keyMap[37] = "left";
-	this._keyMap[38] = "up";
-	this._keyMap[39] = "right";
-	this._keyMap[40] = "down";
+	this._keyMap[37] = 2; // LEFT
+	this._keyMap[38] = 4; // UP
+	this._keyMap[39] = 0; // RIGHT
+	this._keyMap[40] = 6; // DOWN
 };
 
 Game.Player.prototype.act = function() {
@@ -31,6 +32,10 @@ Game.Player.prototype.getTile = function() {
 	return this.tile;
 }
 
+Game.Player.prototype.getFrame = function() {
+	return this._dir;
+}
+
 Game.Player.prototype.move = function(direction) {
 
 };
@@ -46,5 +51,6 @@ Game.Player.prototype.handleEvent = function(e) {
 		case 39: this._x++; break;
 		case 40: this._y++; break;
 	}
+	this._dir = this._keyMap[code] ;
 	this._game.unlock();
 }
