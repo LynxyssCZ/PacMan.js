@@ -69,6 +69,10 @@ Game.Map.prototype.placePlayer = function (nx, ny, tile) {
 	}
 };
 
+Game.Map.prototype.getPlayer = function() {
+	if (this._player) {return this._player;}
+}
+
 Game.Map.prototype.getPlayerX = function() {
 	if (this._player) { return this._player._x; };
 }
@@ -95,10 +99,8 @@ Game.Map.prototype.draw = function() {
 		};
 	};
 	for (key in this._dynamics) {
-		if (this._dynamics[key].tile) {
-			var curr = this._dynamics[key];
-			this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(), false );
-		};
+		var curr = this._dynamics[key];
+		this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(), false );
 	};
 	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), this._player.getFrame(), true );};
 }
@@ -156,13 +158,20 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 	return true;
 }
 
-Game.Map.prototype.checkDynamicCollision = function() {
-
+Game.Map.prototype.checkForDynamic = function(nx, ny) {
+	var x = Math.floor(nx);
+	var y = Math.floor(ny);
+	for (key in this._dynamics) {
+		var curr = this._dynamics[key];
+		if (curr.getX() == x && curr.getY() == y) {
+			return true;
+		};
+	};
 }
 
 Game.Map.prototype.act = function() {
 	for(key in this._dynamics) {
-
+		this._dynamics[key].act();
 	}
 	this.draw();
 };

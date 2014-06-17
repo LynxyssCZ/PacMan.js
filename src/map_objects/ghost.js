@@ -6,17 +6,16 @@ Game.Map.Ghost = function(tile) {
 	this._animation = 0;
 };
 
-Game.Map.Ghost.prototype.turn = function(){
-
+Game.Map.Ghost.prototype.turn = function(me, map){
+	if ( me.canMove( this._dir ) ) {
+		me.move( this._dir );
+	} else {
+		do {
+			this._dir = Math.floor(Math.random()*4)*2;
+		} while( !me.canMove(this._dir) );
+		me.move( this._dir );
+	}
 };
-
-Game.Map.Ghost.prototype.Move = function( dir ) {
-
-}
-
-Game.Map.Ghost.prototype.CanMove = function(x, y) {
-
-}
 
 Game.Map.Ghost.prototype.onCollision = function(me, player) {
 	player.killedBy("Ghost");
@@ -24,5 +23,8 @@ Game.Map.Ghost.prototype.onCollision = function(me, player) {
 }
 
 Game.Map.Ghost.prototype.getFrame = function() {
-	return this._dir+this._animation;
+	var frame = this._animation;
+	if (this._animation == 0) { this._animation++;}
+	else {this._animation = 0; }
+	return this._dir+frame;
 };
