@@ -21,6 +21,16 @@ Game.Player.prototype.act = function() {
 	this._game.lock();
 };
 
+Game.Player.prototype.killedBy = function(killer) {
+	this._game.lock();
+	alert("Killed by "+killer);
+}
+
+Game.Player.prototype.nom = function ( food ) {
+	alert("Nom nom at "+food.x+":"+food.y);
+	this._map.destroyObject(food.x, food.y);
+}
+
 Game.Player.prototype.getY = function() {
 	return this._y
 };

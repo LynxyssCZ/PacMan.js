@@ -38,7 +38,7 @@ Game.DynamicObject.prototype.move = function(direction) {
 
 Game.DynamicObject.prototype.onCollision = function(player) {
 	if (this._def.onCollision) {
-		return this._def.onCollision();
+		return this._def.onCollision(this, player);
 	} else {
 		return true;
 	}

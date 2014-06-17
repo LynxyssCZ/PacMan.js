@@ -50,6 +50,12 @@ Game.Map.prototype.placeObject = function (nx, ny, type) {
 Game.Map.prototype.destroyObject = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
+
+	if (typeof(this._objects[x]) !== 'undefined') { // Row is instanced
+		if (typeof(this._objects[x][y]) !== 'undefined') { // Cell is not empty
+			this._objects[x].splice(y, 1);
+		}
+	}
 }
 
 Game.Map.prototype.placePlayer = function (nx, ny, tile) {
@@ -142,7 +148,9 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 	};
 	if (typeof(this._objects[x]) !== 'undefined') { // Row is instanced
 		if (typeof(this._objects[x][y]) !== 'undefined') { // Cell is not empty
-			// HAndle collision with this object
+			if ( this._objectDefs[this._objects[x][y]].onCollision ) {
+				this._objectDefs[this._objects[x][y]].onCollision({x:x, y:y}, this._player);
+			};
 		}
 	}
 	return true;
@@ -153,6 +161,8 @@ Game.Map.prototype.checkDynamicCollision = function() {
 }
 
 Game.Map.prototype.act = function() {
+	for(key in this._dynamics) {
 
+	}
 	this.draw();
 };

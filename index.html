@@ -15,6 +15,7 @@ spritesheet.src = "http://oi59.tinypic.com/eq5iso.jpg";
 		PacMan.map.defineObject("pinky", new Game.Map.Ghost(2));
 		PacMan.map.defineObject("inky", new Game.Map.Ghost(3));
 		PacMan.map.defineObject("clyde", new Game.Map.Ghost(4));
+		PacMan.map.defineObject("food", {color:"#0f0", onCollision: function(me, player) { player.nom(me); } });
 
 		PacMan.map.addDynamic(3, 2, "pinky");
 		PacMan.map.addDynamic(4, 2, "blinky");
@@ -23,7 +24,10 @@ spritesheet.src = "http://oi59.tinypic.com/eq5iso.jpg";
 		PacMan.map.placeObject(1,1, "block");
 		PacMan.map.placeObject(1,2, "block");
 		PacMan.map.placeObject(1,3, "block");
-		PacMan.map.placeObject(1,4, "block");
+		PacMan.map.placeObject(1,4, "food");
+		PacMan.map.placeObject(5,4, "food");
+		PacMan.map.placeObject(12,8, "food");
+		PacMan.map.placeObject(10,24, "food");
 
 		PacMan.map.placePlayer(2, 2, 0);
 		PacMan.map.draw();

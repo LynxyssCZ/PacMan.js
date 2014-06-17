@@ -1,2 +1,4 @@
-Game.Map.Wall = { impassable:true ,
-	color: "#aaaaaa"}
+Game.Map.Wall = {
+	impassable:true ,
+	color: "#aaaaaa"
+};
