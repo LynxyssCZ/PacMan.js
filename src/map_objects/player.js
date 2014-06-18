@@ -7,6 +7,7 @@ Game.Player = function (x, y, tile, map, game) {
 	this.killed = false;
 	this._game = game;
 	this._map = map;
+	this._score = 0;
 	this.tile = tile;
 	this._dir = 0;
 	this._animation = 0;
@@ -29,9 +30,13 @@ Game.Player.prototype.killedBy = function(killer) {
 };
 
 Game.Player.prototype.nom = function ( food ) {
-	this._map.destroyObject(food.x, food.y);
-	this._map.eatFood();
+	this._score+=food.value;
+	this._map.eatFood(food.x, food.y);
 };
+
+Game.Player.prototype.getScore = function() {
+	return this._score;
+}
 
 Game.Player.prototype.getY = function() {
 	return this._y
