@@ -1,6 +1,7 @@
-Game.Map.Ghost = function(tile) {
+Game.Map.Ghost = function(tile, name) {
 	this.dynamic = true;
 	this.impassable = true;
+	this.name = name;
 	this.tile = tile;
 	this._animation = 0;
 	this._brain = [2, 0, 6, 4];
@@ -28,7 +29,7 @@ Game.Map.Ghost.prototype.turn = function(me, map){
 };
 
 Game.Map.Ghost.prototype.onCollision = function(me, player) {
-	player.killedBy("Ghost");
+	player.killedBy(this.name+" the ghost");
 	return true;
 }
 

@@ -1,10 +1,10 @@
 Game.Level01 = {
 	load: function(map) {
 		map.defineObject("block", Game.Map.Wall);
-		map.defineObject("blinky", new Game.Map.Ghost(1));
-		map.defineObject("pinky", new Game.Map.Ghost(2));
-		map.defineObject("inky", new Game.Map.Ghost(3));
-		map.defineObject("clyde", new Game.Map.Ghost(4));
+		map.defineObject("blinky", new Game.Map.Ghost(1, "Blinky"));
+		map.defineObject("pinky", new Game.Map.Ghost(2, "Pinky"));
+		map.defineObject("inky", new Game.Map.Ghost(3, "Inky"));
+		map.defineObject("clyde", new Game.Map.Ghost(4, "Clyde"));
 		map.defineObject("food", Game.Map.Food );
 		map.scoreBoard(21,13,1);
 		Game.Level01.buildMaze(map, this.Walls);

@@ -246,6 +246,12 @@ Game.Map.prototype.checkForDynamic = function(nx, ny) {
 	};
 }
 
+Game.Map.prototype.playerKilled = function(killer) {
+	this._display.showNotice("You have been caught by: "+killer+"!</br>Your score is: "+this._player.getScore()+" point.");
+	this.draw(false);
+	this._game.lock();
+}
+
 // Map turn.
 // Move all pieces and do a flip redraw
 Game.Map.prototype.act = function() {
@@ -256,12 +262,7 @@ Game.Map.prototype.act = function() {
 	if (this.getFoodCount() == 0) {
 		this.draw(false);
 		this._game.lock();
-		alert("All has been nomed!");
-		return;
-	};
-	if (this._player.killed) {
-		this.draw(false);
-		this._game.lock();
+		this._display.showNotice("All cakes on map have been nomed!</br>You ended up with score of: "+this._player.getScore()+" points.");
 		return;
 	};
 	if (this._display._notice) {this._display.hideNotice();};
@@ -270,9 +271,5 @@ Game.Map.prototype.act = function() {
 		this._dynamics[key].act();
 		this._dirty[this._dynamics[key].getX()][this._dynamics[key].getY()] = true;
 	}
-	if (this._player.killed) {
-		this._game.lock();
-	};
-
 	this.draw(true);
 };

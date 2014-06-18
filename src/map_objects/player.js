@@ -26,7 +26,7 @@ Game.Player.prototype.act = function() {
 Game.Player.prototype.killedBy = function(killer) {
 	//this._game.lock();
 	this.killed = true;
-	alert("Killed by "+killer+"\nScore achieved: "+this._score);
+	this._map.playerKilled(killer);
 };
 
 Game.Player.prototype.nom = function ( food ) {
