@@ -1,0 +1,10 @@
+#game-area-notice {
+ color: white;
+ text-align:
+ center;
+ font-size: 28px;
+ padding: 40px 0px;
+ background-color:black;
+ position: absolute;
+ opacity: 0.9;
+}

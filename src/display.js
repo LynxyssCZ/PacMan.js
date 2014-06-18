@@ -7,16 +7,28 @@ Game.Display = function (width, height, tileWidth, tileHeight, sheet) {
 	this.tileWidth = tileWidth;
 	this.tileHeight = tileHeight;
 	this.sheet = sheet;
+
+	// Create canvas
 	var canvas = document.createElement("canvas");
 	this._context = canvas.getContext("2d");
 	this._context.canvas.width = this.width * this.tileWidth;
 	this._context.canvas.height = this.height * this.tileHeight;
-	this.clear();
 	this._context.textAlign="center";
+
+	// Create noticeboard and position it
+	this._noticeBoard = document.createElement("div");
+	this._noticeBoard.setAttribute("id", "game-area-notice");
+	this._noticeBoard.setAttribute("style", "width: "+this.width * this.tileWidth+"px; top: "+(this.height * this.tileHeight)/4+"px;");
+
+	this.clear();
+	this.hideNotice();
 };
 
 Game.Display.prototype.getContainer = function () {
-	return this._context.canvas;
+	var frag = document.createDocumentFragment();
+	frag.appendChild(this._context.canvas);
+	frag.appendChild(this._noticeBoard);
+	return frag;
 };
 
 Game.Display.prototype.drawTile = function (x, y, tile, frame, clear) {
@@ -46,3 +58,15 @@ Game.Display.prototype.clear = function () {
 Game.Display.prototype.clearTile = function (x, y) {
 	this.drawBlock(x, y, 1, 1, "#000000");
 };
+
+Game.Display.prototype.showNotice = function( text ) {
+	this._notice = true;
+	this._noticeBoard.innerHTML = text;
+	this._noticeBoard.style.visibility = "visible";
+}
+
+Game.Display.prototype.hideNotice = function() {
+	this._notice = false;
+	this._noticeBoard.innerHTML = "";
+	this._noticeBoard.style.visibility = "hidden";
+}

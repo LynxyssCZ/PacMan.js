@@ -4,11 +4,13 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<title>PacMan fiddle</title>
 	<script type='text/javascript' src='pacman.js'></script>
-	<script type="text/javascript">//<![CDATA[ 
+	<link rel="stylesheet" type="text/css" href="pacman.css">
+	<script type="text/javascript">//<![CDATA[
 var spritesheet = new Image();
 spritesheet.src = "http://lynxysscz.github.io/PacMan.js/img/full-sprites_big.png";
 	spritesheet.onload = function() {
-		var PacMan = new Game.Engine(16, 80, 40);
+		var gameArea = document.getElementById("game-area");
+		var PacMan = new Game.Engine(16, 80, 40, gameArea);
 		PacMan.init(spritesheet);
 		PacMan.loadLevel(Game.Level01);
 		PacMan.map.draw(false);
@@ -18,5 +20,6 @@ spritesheet.src = "http://lynxysscz.github.io/PacMan.js/img/full-sprites_big.png
 </script>
 </head>
 	<body>
+		<div id="game-area"></div>
 	</body>
 </html>

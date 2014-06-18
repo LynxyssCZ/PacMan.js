@@ -1,12 +1,13 @@
 /***********************************************************************/
 // Engine object
 // Content of engine.js
-Game.Engine = function (size, width, height) {
+Game.Engine = function (size, width, height, container) {
 	this.tileSize = size;
 	this.width = width;
 	this.height = height;
 	this._qeue = [];
 	this._lock = 1;
+	this._container = container
 };
 
 Game.Engine.prototype.init = function (spriteSheet) {
@@ -14,7 +15,7 @@ Game.Engine.prototype.init = function (spriteSheet) {
 	this.map = new Game.Map(this, this.display, this.width, this.height);
 	this.add(this.map);
 	this.add(new Game.Engine.Timer(150, this));
-	document.body.appendChild(this.display.getContainer());
+	this._container.appendChild(this.display.getContainer());
 };
 
 Game.Engine.prototype.loadLevel = function (level) {

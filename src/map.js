@@ -9,6 +9,7 @@ Game.Map = function (game, display, width, height) {
 	this.clear();
 };
 
+// Clear Game state
 Game.Map.prototype.clear = function() {
 	this._objectDefs = [];
 	this._objects = [[]];
@@ -19,6 +20,7 @@ Game.Map.prototype.clear = function() {
 	this._started = false;
 }
 
+// Set scoreboard position and size
 Game.Map.prototype.scoreBoard = function (x, y, size) {
 	this._scoreX = x;
 	this._scoreY = y;
@@ -35,14 +37,17 @@ Game.Map.prototype.defineObject = function (name, props) {
 	this._objectDefs[name] = props;
 };
 
+// Set food count manually
 Game.Map.prototype.setFoodCount = function(count) {
 	this._foodCount = count;
 }
 
+// Return current food count
 Game.Map.prototype.getFoodCount = function() {
 	return this._foodCount;
 }
 
+// Eat food on given indices
 Game.Map.prototype.eatFood = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -50,6 +55,7 @@ Game.Map.prototype.eatFood = function(nx, ny) {
 	this._foodCount--;
 }
 
+// Add dynamic object to map
 Game.Map.prototype.addDynamic = function(nx, ny, type) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -59,6 +65,7 @@ Game.Map.prototype.addDynamic = function(nx, ny, type) {
 	this._dynamics.push( actor );
 }
 
+// Place a static object into the grid
 Game.Map.prototype.placeObject = function (nx, ny, type) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -80,6 +87,7 @@ Game.Map.prototype.placeObject = function (nx, ny, type) {
 	}
 };
 
+// Destroy static object on given indices
 Game.Map.prototype.destroyObject = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -94,6 +102,7 @@ Game.Map.prototype.destroyObject = function(nx, ny) {
 	return false;
 }
 
+// Place player into the grid
 Game.Map.prototype.placePlayer = function (nx, ny, tile) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -105,23 +114,27 @@ Game.Map.prototype.placePlayer = function (nx, ny, tile) {
 	}
 };
 
+// Player getter
 Game.Map.prototype.getPlayer = function() {
 	if (this._player) {return this._player;}
 }
 
+// Player X getter
 Game.Map.prototype.getPlayerX = function() {
 	if (this._player) { return this._player.getX(); };
 }
 
+// Player Y getter
 Game.Map.prototype.getPlayerY = function() {
 	if (this._player) { return this._player.getY(); };
 }
 
+// Object def getter
 Game.Map.prototype.getDefinition = function(type) {
 	return this._objectDefs[type];
 }
 
-// Redraw the whole map
+// Redraw dirty parts of the map
 Game.Map.prototype.draw = function( flip ) {
 	var dirties = 0;
 	for(var coll in this._dirty) {
@@ -149,13 +162,20 @@ Game.Map.prototype.draw = function( flip ) {
 		var curr = this._dynamics[key];
 		this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(flip), true );
 	};
-	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), this._player.getFrame(flip), true );};
+	if (this._player) {this._display.drawTile( this._player.getX(),
+												this._player.getY(),
+												this._player.getTile(),
+												this._player.getFrame(flip),
+												true );
+						};
+
 	if (this._scoreSize) {
 		this._display.drawText(this._scoreX, this._scoreY, this._scoreSize, "Score:");
 		this._display.drawText(this._scoreX, this._scoreY+this._scoreSize, this._scoreSize, this._player.getScore());
 	};
 }
 
+// Check if object can move to given position
 Game.Map.prototype.canMoveTo = function(nx, ny, type) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -171,6 +191,7 @@ Game.Map.prototype.canMoveTo = function(nx, ny, type) {
 	}
 }
 
+// Return object at given coordinates (No player)
 Game.Map.prototype.getObjectOn = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -188,6 +209,7 @@ Game.Map.prototype.getObjectOn = function(nx, ny) {
 	};
 }
 
+// Player move checks
 Game.Map.prototype.playerMoveTo = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -212,6 +234,7 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 	return true;
 }
 
+// Is there a dynamic object at given coordinates?
 Game.Map.prototype.checkForDynamic = function(nx, ny) {
 	var x = Math.floor(nx);
 	var y = Math.floor(ny);
@@ -223,8 +246,13 @@ Game.Map.prototype.checkForDynamic = function(nx, ny) {
 	};
 }
 
+// Map turn.
+// Move all pieces and do a flip redraw
 Game.Map.prototype.act = function() {
-	if(this._started === false) { return; };
+	if(this._started === false) {
+		if (!this._display._notice) {this._display.showNotice("Start the game by moving.</br>Use arrows to move around.");};
+		return;
+	};
 	if (this.getFoodCount() == 0) {
 		this.draw(false);
 		this._game.lock();
@@ -236,6 +264,7 @@ Game.Map.prototype.act = function() {
 		this._game.lock();
 		return;
 	};
+	if (this._display._notice) {this._display.hideNotice();};
 	for(key in this._dynamics) {
 		this._dirty[this._dynamics[key].getX()][this._dynamics[key].getY()] = true;
 		this._dynamics[key].act();
