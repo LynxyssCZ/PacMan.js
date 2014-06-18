@@ -13,7 +13,7 @@ Game.Engine.prototype.init = function (spriteSheet) {
 	this.display = new Game.Display(this.width, this.height, this.tileSize, this.tileSize, spriteSheet);
 	this.map = new Game.Map(this, this.display, this.width, this.height);
 	this.add(this.map);
-	this.add(new Game.Engine.Timer(300, this));
+	this.add(new Game.Engine.Timer(150, this));
 	document.body.appendChild(this.display.getContainer());
 };
 
