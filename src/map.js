@@ -16,6 +16,7 @@ Game.Map.prototype.clear = function() {
 	this._dynamics = [];
 	this._player = null;
 	this._foodCount = 0;
+	this._started = false;
 }
 
 Game.Map.prototype.scoreBoard = function (x, y, size) {
@@ -207,6 +208,7 @@ Game.Map.prototype.playerMoveTo = function(nx, ny) {
 			};
 		}
 	}
+	this._started = true;
 	return true;
 }
 
@@ -222,6 +224,7 @@ Game.Map.prototype.checkForDynamic = function(nx, ny) {
 }
 
 Game.Map.prototype.act = function() {
+	if(this._started === false) { return; };
 	if (this.getFoodCount() == 0) {
 		this.draw(false);
 		this._game.lock();
