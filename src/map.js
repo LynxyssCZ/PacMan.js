@@ -121,25 +121,7 @@ Game.Map.prototype.getDefinition = function(type) {
 }
 
 // Redraw the whole map
-Game.Map.prototype.draw = function() {
-	//this._display.clear();
-/**
-	for (var row in this._objects) {
-		for (var coll in this._objects[row]) {
-			var objectDef = this._objectDefs[this._objects[row][coll]];
-			if ( objectDef.tile ) {
-				if ( objectDef.frame ) {
-					this._display.drawTile( row, coll, objectDef.tile, objectDef.frame, false );
-				} else {
-					this._display.drawTile( row, coll, objectDef.tile, 0, false );
-				}
-			}
-			else if( objectDef.color ) {
-				this._display.drawBlock( row , coll , 1, 1, objectDef.color);
-			}
-		};
-	};
-	*/
+Game.Map.prototype.draw = function( flip ) {
 	var dirties = 0;
 	for(var coll in this._dirty) {
 		for(var row in this._dirty[coll]) {
@@ -164,9 +146,9 @@ Game.Map.prototype.draw = function() {
 	}
 	for (key in this._dynamics) {
 		var curr = this._dynamics[key];
-		this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(), true );
+		this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(flip), true );
 	};
-	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), this._player.getFrame(), true );};
+	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), this._player.getFrame(flip), true );};
 	if (this._scoreSize) {
 		this._display.drawText(this._scoreX, this._scoreY, this._scoreSize, "Score:");
 		this._display.drawText(this._scoreX, this._scoreY+this._scoreSize, this._scoreSize, this._player.getScore());
@@ -241,13 +223,13 @@ Game.Map.prototype.checkForDynamic = function(nx, ny) {
 
 Game.Map.prototype.act = function() {
 	if (this.getFoodCount() == 0) {
-		this.draw();
+		this.draw(false);
 		this._game.lock();
 		alert("All has been nomed!");
 		return;
 	};
 	if (this._player.killed) {
-		this.draw();
+		this.draw(false);
 		this._game.lock();
 		return;
 	};
@@ -260,5 +242,5 @@ Game.Map.prototype.act = function() {
 		this._game.lock();
 	};
 
-	this.draw();
+	this.draw(true);
 };

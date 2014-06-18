@@ -50,10 +50,12 @@ Game.Player.prototype.getTile = function() {
 	return this.tile;
 };
 
-Game.Player.prototype.getFrame = function() {
+Game.Player.prototype.getFrame = function(flip) {
 	var frame = this._animation;
-	if (this._animation == 0) { this._animation++;}
-	else {this._animation = 0; }
+	if(flip){
+		if (this._animation == 0) { this._animation++;}
+		else {this._animation = 0; }
+	}
 	return this._dir+frame;
 };
 
@@ -84,7 +86,7 @@ Game.Player.prototype.handleEvent = function(e) {
 
 	if (this.move(newX, newY)) {
 		this._dir = this._keyMap[code] ;
-		this._map.draw();
+		this._map.draw(false); // Non flip call
 		this._myTurn = false;
 	};
 };

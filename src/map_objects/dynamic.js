@@ -15,8 +15,8 @@ Game.DynamicObject.prototype.getTile = function() {
 	else return this._def.tile;
 }
 
-Game.DynamicObject.prototype.getFrame = function() {
-	if ( this._def.getFrame ) { return this._def.getFrame() };
+Game.DynamicObject.prototype.getFrame = function(flip) {
+	if ( this._def.getFrame ) { return this._def.getFrame(flip) };
 	return 0;
 }
 

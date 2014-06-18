@@ -32,10 +32,12 @@ Game.Map.Ghost.prototype.onCollision = function(me, player) {
 	return true;
 }
 
-Game.Map.Ghost.prototype.getFrame = function() {
+Game.Map.Ghost.prototype.getFrame = function(flip) {
 	var frame = this._animation;
-	if (this._animation == 0) { this._animation++;}
-	else {this._animation = 0; }
+	if(flip){
+		if (this._animation == 0) { this._animation++;}
+		else {this._animation = 0; }
+	}
 	return this._dir+frame;
 };
 
