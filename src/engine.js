@@ -13,7 +13,8 @@ Game.Engine.prototype.init = function (spriteSheet) {
 	this.display = new Game.Display(this.width, this.height, this.tileSize, this.tileSize, spriteSheet);
 	this.map = new Game.Map(this, this.display, this.width, this.height);
 	this.add(this.map);
-	document.body.appendChild(this.display.getContainer());	
+	this.add(new Game.Engine.Timer(300, this));
+	document.body.appendChild(this.display.getContainer());
 };
 
 Game.Engine.prototype.loadLevel = function (level) {
@@ -23,6 +24,7 @@ Game.Engine.prototype.loadLevel = function (level) {
 };
 
 Game.Engine.prototype.start = function () {
+	window.addEventListener("keydown", this.map._player);
 	this.unlock();
 };
 

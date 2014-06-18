@@ -259,5 +259,6 @@ Game.Map.prototype.act = function() {
 	if (this._player.killed) {
 		this._game.lock();
 	};
+
 	this.draw();
 };

@@ -16,11 +16,11 @@ Game.Player = function (x, y, tile, map, game) {
 	this._keyMap[38] = 4; // UP
 	this._keyMap[39] = 0; // RIGHT
 	this._keyMap[40] = 6; // DOWN
+	this._myTurn = false;
 };
 
 Game.Player.prototype.act = function() {
-	window.addEventListener("keydown", this);
-	this._game.lock();
+	this._myTurn = true;
 };
 
 Game.Player.prototype.killedBy = function(killer) {
@@ -71,7 +71,7 @@ Game.Player.prototype.move = function(newX, newY) {
 
 Game.Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
-
+	if(!this._myTurn) { return; }
 	if (!(code in this._keyMap)) { return; }
 	var newX = this._x;
 	var newY = this._y;
@@ -84,7 +84,7 @@ Game.Player.prototype.handleEvent = function(e) {
 
 	if (this.move(newX, newY)) {
 		this._dir = this._keyMap[code] ;
-		window.removeEventListener("keydown", this);
-		this._game.unlock();
+		this._map.draw();
+		this._myTurn = false;
 	};
 };
