@@ -18,6 +18,12 @@ Game.Map.prototype.clear = function() {
 	this._foodCount = 0;
 }
 
+Game.Map.prototype.scoreBoard = function (x, y, size) {
+	this._scoreX = x;
+	this._scoreY = y;
+	this._scoreSize = size;
+}
+
 /**
  * Add object definition
  */
@@ -161,6 +167,10 @@ Game.Map.prototype.draw = function() {
 		this._display.drawTile( curr.getX(), curr.getY(), curr.getTile(), curr.getFrame(), true );
 	};
 	if (this._player) {this._display.drawTile( this._player.getX(), this._player.getY(), this._player.getTile(), this._player.getFrame(), true );};
+	if (this._scoreSize) {
+		this._display.drawText(this._scoreX, this._scoreY, this._scoreSize, "Score:");
+		this._display.drawText(this._scoreX, this._scoreY+this._scoreSize, this._scoreSize, this._player.getScore());
+	};
 }
 
 Game.Map.prototype.canMoveTo = function(nx, ny, type) {
