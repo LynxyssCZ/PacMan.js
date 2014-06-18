@@ -15,11 +15,7 @@ spritesheet.src = "http://lynxysscz.github.io/PacMan.js/img/full-sprites_big.png
 		// Pass it to the engine
 		var PacMan = new Game.Engine(16, 80, 40, gameArea);
 		// Init engine with specific spritesheet
-		PacMan.init(spritesheet);
-		// Load level
-		PacMan.loadLevel(Game.Level01);
-		// Draw map for the first time (Takes long time, since whole map is dirty)
-		PacMan.map.draw(false);
+		PacMan.init(new Array(Game.Level01) ,spritesheet);
 		// Start the game itself, this call unlocks the handbrake on the engine and binds input
 		PacMan.start();
 		// Show the completed game area

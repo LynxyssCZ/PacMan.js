@@ -31,7 +31,7 @@ Game.Player.prototype.killedBy = function(killer) {
 
 Game.Player.prototype.nom = function ( food ) {
 	this._score+=food.value;
-	this._map.eatFood(food.x, food.y);
+	this._map.destroyObject(food.x, food.y);
 };
 
 Game.Player.prototype.getScore = function() {

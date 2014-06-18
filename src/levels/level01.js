@@ -11,6 +11,15 @@ Game.Level01 = {
 
 	},
 
+	checkVictory: function(map) {
+		if (map.getCount('food') == 0) { return true; };
+		return false;
+	},
+
+	checkDefeat: function(map) {
+		return true;
+	},
+
 	buildMaze: function(map, Walls) {
 		for (var y = 0; y < Walls.length; y++) {
 			for (var x = 0; x < Walls[y].length; x++) {
@@ -28,6 +37,7 @@ Game.Level01 = {
 					case 'C' : map.addDynamic(x, y, "clyde");
 						break;
 					case 'O' : map.placePlayer(x, y, 0);
+								//map.placeObject(x+1, y, 'food');
 						break;
 				}
 			};

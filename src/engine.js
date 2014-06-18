@@ -6,29 +6,74 @@ Game.Engine = function (size, width, height, container) {
 	this.width = width;
 	this.height = height;
 	this._qeue = [];
+	this._levels = [];
+	this._level = 0;
 	this._lock = 1;
+	this._running = false;
+	this.display;
+	this.map;
+	this._refresher;
+	this._framecounter = 0;
 	this._container = container
 };
 
-Game.Engine.prototype.init = function (spriteSheet) {
+Game.Engine.prototype.init = function (levels, spriteSheet) {
+	this._levels = levels;
 	this.display = new Game.Display(this.width, this.height, this.tileSize, this.tileSize, spriteSheet);
 	this.map = new Game.Map(this, this.display, this.width, this.height);
-	this.add(this.map);
-	this.add(new Game.Engine.Timer(150, this));
 	this._container.appendChild(this.display.getContainer());
+
 };
 
-Game.Engine.prototype.loadLevel = function (level) {
+Game.Engine.prototype.loadLevel = function (index) {
 	this.map.clear();
+	if (index >= this._levels.length) {
+		return false;
+	};
 	// Hand level the map reference.
-	level.load(this.map);
+	this._levels[index].load(this.map);
+	return true;
 };
 
 Game.Engine.prototype.start = function () {
-	window.addEventListener("keydown", this.map._player);
-	this.unlock();
+	if(this.loadLevel(this._level))
+	{
+		this.add(this.map);
+		this.add(new Game.Engine.Timer(150, this));
+		this._level++;
+		this._refresher = window.setInterval(this.refresh.bind(this), (1000/30) );
+		window.addEventListener("keydown", this.map._player);
+		this._running = true;
+		this.unlock();
+	}
 };
 
+Game.Engine.prototype.stop = function () {
+	this.lock();
+	window.removeEventListener("keydown", this.map._player);
+	window.clearInterval(this._refresher);
+	this.clear();
+	this._running = false;
+	alert("exiting ");
+};
+
+Game.Engine.prototype.checkMap = function () {
+	if (! this._running ) { return; };
+	if ( this._levels[this._level-1].checkVictory(this.map) ) {
+		this.display.showNotice("All cakes on map have been nomed!</br>You ended up with score of: "+this.map.getPlayer().getScore()+" points.");
+		this.stop();
+	};
+};
+
+Game.Engine.prototype.refresh = function() {
+	if ( this._framecounter == 6 ) { this._framecounter = 0; };
+	this.map.draw( this._framecounter == 0 );
+	this._framecounter++;
+};
+
+////////////////////
+// Scheduler code //
+////////////////////
 Game.Engine.prototype.lock = function () {
 	this._lock++;
 	return this;
