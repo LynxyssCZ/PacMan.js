@@ -54,7 +54,6 @@ Game.Engine.prototype.stop = function () {
 	window.clearInterval(this._refresher);
 	this.clear();
 	this._running = false;
-	alert("exiting ");
 };
 
 Game.Engine.prototype.checkMap = function () {
